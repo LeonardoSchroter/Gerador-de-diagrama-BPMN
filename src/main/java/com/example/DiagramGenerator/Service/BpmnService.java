@@ -21,29 +21,24 @@ public class BpmnService {
 
 
     public BpmnModelInstance generateBpmn(List<String> taskNames) {
-        // Criar o modelo BPMN vazio
         BpmnModelInstance modelInstance = Bpmn.createEmptyModel();
 
-        // Configurar as definições do modelo
         Definitions definitions = modelInstance.newInstance(Definitions.class);
         definitions.setId("Definitions_" + UUID.randomUUID());
         definitions.setTargetNamespace("http://camunda.org/examples");
         modelInstance.setDefinitions(definitions);
 
-        // Criar o processo principal
         Process process = modelInstance.newInstance(Process.class);
         process.setId("Process_" + UUID.randomUUID());
         definitions.addChildElement(process);
 
-        // Criar evento inicial
         StartEvent startEvent = createElement(modelInstance, process, "startEvent", StartEvent.class);
         addDiagramElement(modelInstance, startEvent, 100, 150, 30, 30);
 
         FlowNode lastNode = startEvent;
         List<Task> tasks = new ArrayList<>();
 
-        // Criar todas as tarefas
-        int x = 200; // Posição inicial em X para tarefas
+        int x = 200;
         for (String taskName : taskNames) {
             Task task = createElement(modelInstance, process, "task_" + UUID.randomUUID(), Task.class);
             task.setName(taskName);
@@ -52,11 +47,9 @@ public class BpmnService {
             x += 150;
         }
 
-        // Criar evento final
         EndEvent endEvent = createElement(modelInstance, process, "endEvent", EndEvent.class);
         addDiagramElement(modelInstance, endEvent, x, 150, 30, 30);
 
-        // Conectar as tarefas com SequenceFlow
         FlowNode previousNode = startEvent;
         for (Task task : tasks) {
             createSequenceFlow(modelInstance, previousNode, task);
@@ -72,7 +65,7 @@ public class BpmnService {
     private <T extends FlowElement> T createElement(BpmnModelInstance modelInstance, Process process, String id, Class<T> elementClass) {
         T element = modelInstance.newInstance(elementClass);
         element.setId(id);
-        process.addChildElement(element); // Aqui adicionamos diretamente no processo
+        process.addChildElement(element);
         return element;
     }
 
@@ -83,16 +76,13 @@ public class BpmnService {
         sequenceFlow.setSource(from);
         sequenceFlow.setTarget(to);
 
-        // Associar o SequenceFlow ao processo principal
         Process process = (Process) from.getParentElement();
         process.addChildElement(sequenceFlow);
 
-        // Conectar o fluxo aos nós
         from.getOutgoing().add(sequenceFlow);
         to.getIncoming().add(sequenceFlow);
 
-        // Adicionar ao diagrama visual (BpmnEdge)
-        addDiagramElement(modelInstance, sequenceFlow, 0, 0, 0, 0);  // O posicionamento será calculado automaticamente
+        addDiagramElement(modelInstance, sequenceFlow, 0, 0, 0, 0);
 
         return sequenceFlow;
     }
@@ -105,7 +95,6 @@ public class BpmnService {
                     return newDiagram;
                 });
 
-        // Criar ou obter o BpmnPlane
         BpmnPlane plane = modelInstance.getModelElementsByType(BpmnPlane.class).stream().findFirst()
                 .orElseGet(() -> {
                     BpmnPlane newPlane = modelInstance.newInstance(BpmnPlane.class);
@@ -114,7 +103,6 @@ public class BpmnService {
                     return newPlane;
                 });
 
-        // Para FlowNode, cria e adiciona o BpmnShape
         if (element instanceof FlowNode) {
             BpmnShape shape = modelInstance.newInstance(BpmnShape.class);
             shape.setBpmnElement((FlowNode) element);
@@ -149,7 +137,7 @@ public class BpmnService {
 
             edge.addChildElement(waypoint1);
             edge.addChildElement(waypoint2);
-            plane.addChildElement(edge);  // Aqui adicionamos diretamente ao BpmnPlane
+            plane.addChildElement(edge);
         }
     }
 
