@@ -114,9 +114,8 @@ public class BpmnService {
             bounds.setHeight(height);
 
             shape.setBounds(bounds);
-            plane.addChildElement(shape); // Aqui adicionamos diretamente ao BpmnPlane
+            plane.addChildElement(shape);
         } else if (element instanceof SequenceFlow) {
-            // Para SequenceFlow, cria e adiciona o BpmnEdge
             SequenceFlow flow = (SequenceFlow) element;
             BpmnEdge edge = modelInstance.newInstance(BpmnEdge.class);
             edge.setBpmnElement(flow);
@@ -145,6 +144,6 @@ public class BpmnService {
         return modelInstance.getModelElementsByType(BpmnShape.class).stream()
                 .filter(shape -> shape.getBpmnElement().equals(node))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Shape not found for node: " + node.getId()));
+                .orElseThrow(() -> new IllegalStateException("Forma não encontrada: " + node.getId()));
     }
 }
