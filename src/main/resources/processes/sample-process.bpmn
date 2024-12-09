@@ -1,43 +1,46 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
-  <process id="transactional-collapsed-subprocess" name="transactional-collapsed-subprocess" isExecutable="true">
-    <startEvent id="startEvent" flowable:formFieldValidation="true"/>
-    <endEvent id="sid-D1AA9503-1CA6-4F7C-BE57-C3FB55F87443" name="endEvent"/>
-    <transaction id="transactionalCollapsedSubprocess" name="subProcess"/>
-    <transaction id="transactionalSubprocess" name="subProcess"/>
-    <sequenceFlow id="sid-ACFA6668-EA33-4776-8C6B-A719753B834C" sourceRef="startEvent" targetRef="transactionalSubprocess"/>
-    <sequenceFlow id="sid-2849104E-212F-4940-924A-B0C866942BBB" sourceRef="transactionalSubprocess" targetRef="transactionalCollapsedSubprocess"/>
-    <sequenceFlow id="sid-4EBE8673-726D-47D8-B02A-6A63AEA86DD2" sourceRef="transactionalCollapsedSubprocess" targetRef="sid-D1AA9503-1CA6-4F7C-BE57-C3FB55F87443"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_4ea0fb00-24c0-4638-a4cf-ff86941d3cde" targetNamespace="http://camunda.org/examples" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL">
+  <process id="Process_0fcdd56a-83ba-4ce3-8025-2dfc6f475ac2">
+    <startEvent id="startEvent">
+      <outgoing>startEvent_task_d43045e2-bd7c-4edf-9210-ae1d3cdd3352_flow</outgoing>
+    </startEvent>
+    <task id="task_d43045e2-bd7c-4edf-9210-ae1d3cdd3352" name="1">
+      <incoming>startEvent_task_d43045e2-bd7c-4edf-9210-ae1d3cdd3352_flow</incoming>
+      <outgoing>task_d43045e2-bd7c-4edf-9210-ae1d3cdd3352_task_99de2953-c8ec-4e41-9e14-26451fd28e62_flow</outgoing>
+    </task>
+    <sequenceFlow id="startEvent_task_d43045e2-bd7c-4edf-9210-ae1d3cdd3352_flow" sourceRef="startEvent" targetRef="task_d43045e2-bd7c-4edf-9210-ae1d3cdd3352"/>
+    <task id="task_99de2953-c8ec-4e41-9e14-26451fd28e62" name="a">
+      <incoming>task_d43045e2-bd7c-4edf-9210-ae1d3cdd3352_task_99de2953-c8ec-4e41-9e14-26451fd28e62_flow</incoming>
+      <outgoing>task_99de2953-c8ec-4e41-9e14-26451fd28e62_task_a69c3849-935b-447f-afc0-3501374ab34f_flow</outgoing>
+    </task>
+    <sequenceFlow id="task_d43045e2-bd7c-4edf-9210-ae1d3cdd3352_task_99de2953-c8ec-4e41-9e14-26451fd28e62_flow" sourceRef="task_d43045e2-bd7c-4edf-9210-ae1d3cdd3352" targetRef="task_99de2953-c8ec-4e41-9e14-26451fd28e62"/>
+    <task id="task_a69c3849-935b-447f-afc0-3501374ab34f" name="v">
+      <incoming>task_99de2953-c8ec-4e41-9e14-26451fd28e62_task_a69c3849-935b-447f-afc0-3501374ab34f_flow</incoming>
+      <outgoing>task_a69c3849-935b-447f-afc0-3501374ab34f_endEvent_flow</outgoing>
+    </task>
+    <sequenceFlow id="task_99de2953-c8ec-4e41-9e14-26451fd28e62_task_a69c3849-935b-447f-afc0-3501374ab34f_flow" sourceRef="task_99de2953-c8ec-4e41-9e14-26451fd28e62" targetRef="task_a69c3849-935b-447f-afc0-3501374ab34f"/>
+    <endEvent id="endEvent">
+      <incoming>task_a69c3849-935b-447f-afc0-3501374ab34f_endEvent_flow</incoming>
+    </endEvent>
+    <sequenceFlow id="task_a69c3849-935b-447f-afc0-3501374ab34f_endEvent_flow" sourceRef="task_a69c3849-935b-447f-afc0-3501374ab34f" targetRef="endEvent"/>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_transactional-collapsed-subprocess">
-    <bpmndi:BPMNPlane bpmnElement="transactional-collapsed-subprocess" id="BPMNPlane_transactional-collapsed-subprocess">
-      <bpmndi:BPMNShape bpmnElement="startEvent" id="BPMNShape_startEvent">
-        <omgdc:Bounds height="30.0" width="30.0" x="100.0" y="163.0"/>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_34308640-7f2b-4f0f-99ad-c2b01995a4c7">
+    <bpmndi:BPMNPlane bpmnElement="Process_0fcdd56a-83ba-4ce3-8025-2dfc6f475ac2" id="BPMNPlane_b1c6e0d3-6d03-44d5-8721-10b5b897676b">
+      <bpmndi:BPMNShape bpmnElement="startEvent" id="BPMNShape_974df888-9243-4c8b-87db-004bd18b1013">
+        <dc:Bounds height="30.0" width="30.0" x="100.0" y="150.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="sid-D1AA9503-1CA6-4F7C-BE57-C3FB55F87443" id="BPMNShape_sid-D1AA9503-1CA6-4F7C-BE57-C3FB55F87443">
-        <omgdc:Bounds height="28.0" width="28.0" x="765.0" y="162.0"/>
+      <bpmndi:BPMNShape bpmnElement="task_d43045e2-bd7c-4edf-9210-ae1d3cdd3352" id="BPMNShape_fe9dd7d5-3438-4652-ae8b-8b1905333d20">
+        <dc:Bounds height="50.0" width="80.0" x="200.0" y="150.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="transactionalCollapsedSubprocess" id="BPMNShape_transactionalCollapsedSubprocess" isExpanded="false">
-        <omgdc:Bounds height="80.0" width="100.0" x="525.0" y="136.0"/>
+      <bpmndi:BPMNShape bpmnElement="task_99de2953-c8ec-4e41-9e14-26451fd28e62" id="BPMNShape_62926465-7749-447a-97da-8acbd692e3c5">
+        <dc:Bounds height="50.0" width="80.0" x="350.0" y="150.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="transactionalSubprocess" id="BPMNShape_transactionalSubprocess">
-        <omgdc:Bounds height="160.0" width="200.0" x="195.0" y="98.0"/>
+      <bpmndi:BPMNShape bpmnElement="task_a69c3849-935b-447f-afc0-3501374ab34f" id="BPMNShape_8569605f-3f0d-4fb8-9a2f-5fa7b0ecc7be">
+        <dc:Bounds height="50.0" width="80.0" x="500.0" y="150.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="sid-ACFA6668-EA33-4776-8C6B-A719753B834C" id="BPMNEdge_sid-ACFA6668-EA33-4776-8C6B-A719753B834C">
-        <omgdi:waypoint x="129.94999943586103" y="178.0"/>
-        <omgdi:waypoint x="194.9999999999357" y="178.0"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="sid-4EBE8673-726D-47D8-B02A-6A63AEA86DD2" id="BPMNEdge_sid-4EBE8673-726D-47D8-B02A-6A63AEA86DD2">
-        <omgdi:waypoint x="624.9499999999294" y="176.0"/>
-        <omgdi:waypoint x="765.0" y="176.0"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="sid-2849104E-212F-4940-924A-B0C866942BBB" id="BPMNEdge_sid-2849104E-212F-4940-924A-B0C866942BBB">
-        <omgdi:waypoint x="394.9499999999995" y="177.28571428571428"/>
-        <omgdi:waypoint x="524.9999999999985" y="176.35678571428573"/>
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="endEvent" id="BPMNShape_b881faab-d32f-4f54-a22a-2dfb6c8494d9">
+        <dc:Bounds height="30.0" width="30.0" x="650.0" y="150.0"/>
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
-  </bpmndi:BPMNDiagram>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_transactionalCollapsedSubprocess">
-    <bpmndi:BPMNPlane bpmnElement="transactionalCollapsedSubprocess" id="BPMNPlane_transactionalCollapsedSubprocess"/>
   </bpmndi:BPMNDiagram>
 </definitions>

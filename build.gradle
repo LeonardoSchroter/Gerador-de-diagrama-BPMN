@@ -34,8 +34,6 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter:7.20.0'
-	implementation 'org.camunda.bpm.model:camunda-bpmn-model:7.20.0'
-
 }
 
 tasks.named('test') {

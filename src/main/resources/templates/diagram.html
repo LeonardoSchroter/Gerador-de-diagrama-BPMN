@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Diagrama BPMN</title>
+    <script src="https://unpkg.com/bpmn-js@10.0.0/dist/bpmn-viewer.development.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #canvas {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        .task-input {
+            display: flex;
+            margin-bottom: 5px;
+        }
+        .task-input input {
+            flex: 1;
+            padding: 5px;
+            margin-right: 5px;
+        }
+        .task-input button {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>Gerador de Diagrama BPMN</h1>
+<form id="taskForm">
+    <label for="processId">ID do Processo:</label><br>
+    <input type="text" id="processId" name="processId" placeholder="Exemplo: dynamicProcess" required><br><br>
+
+    <label>Tarefas:</label><br>
+    <div id="taskInputs">
+        <div class="task-input">
+            <input type="text" name="task" placeholder="Nome da Tarefa" required>
+            <button type="button" class="removeTask">Remover</button>
+        </div>
+    </div>
+    <button type="button" id="addTask">Adicionar Tarefa</button><br><br>
+
+
+    <button type="submit">Gerar Diagrama</button>
+</form>
+
+<div id="canvas"></div>
+
+<script>
+    const taskForm = document.getElementById("taskForm");
+    const taskInputs = document.getElementById("taskInputs");
+    const addTaskButton = document.getElementById("addTask");
+
+    addTaskButton.addEventListener("click", () => {
+        const taskDiv = document.createElement("div");
+        taskDiv.className = "task-input";
+        taskDiv.innerHTML = `
+                <input type="text" name="task" placeholder="Nome da Tarefa" required>
+                <button type="button" class="removeTask">Remover</button>
+            `;
+        taskInputs.appendChild(taskDiv);
+    });
+
+    taskInputs.addEventListener("click", (e) => {
+        if (e.target && e.target.classList.contains("removeTask")) {
+            e.target.parentElement.remove();
+        }
+    });
+
+    taskForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const processId = document.getElementById("processId").value.trim();
+        const taskElements = document.querySelectorAll('input[name="task"]');
+        const taskNames = Array.from(taskElements)
+            .map(input => input.value.trim())
+            .filter(name => name !== "");
+
+        if (!processId || taskNames.length === 0) {
+            alert("Por favor, preencha o ID do processo e pelo menos uma tarefa.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/bpmn/generate-web?processId=${encodeURIComponent(processId)}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(taskNames)
+            });
+
+            if (response.ok) {
+                const bpmnXml = await response.text();
+                renderDiagram(bpmnXml);
+            } else {
+                const errorText = await response.text();
+                console.error("Erro ao gerar o diagrama:", errorText);
+                alert("Erro ao gerar o diagrama. Verifique os logs do servidor.");
+            }
+        } catch (error) {
+            console.error("Erro de rede:", error);
+            alert("Erro de rede ao tentar gerar o diagrama.");
+        }
+    });
+
+    function renderDiagram(bpmnXml) {
+        const viewer = new BpmnJS({
+            container: '#canvas'
+        });
+
+        viewer.importXML(bpmnXml, (err) => {
+            if (err) {
+                console.error("Erro ao renderizar diagrama:", err);
+                alert("Erro ao renderizar o diagrama. Verifique os logs do console.");
+            } else {
+                console.log("Diagrama renderizado com sucesso");
+                viewer.get('canvas').zoom('fit-viewport');
+            }
+        });
+    }
+</script>
+</body>
+</html>
